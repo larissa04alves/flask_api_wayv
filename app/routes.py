@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 import pandas as pd
 from .models import Pessoa
 from . import db
+from datetime import datetime
 
 bp = Blueprint('routes', __name__)
 
@@ -43,14 +44,16 @@ def listar():
         } for p in pessoas
     ])
 
-@bp.route('/atualizar', methods=['PUT'])
+@bp.route('/atualizar/<int:id>', methods=['PUT'])
 def atualizar(id):
-    data = request.get_json()
-    nova_data = data.get('nascimento')
-    pessoa = Pessoa.query.get_or_404(id)
-    pessoa.nascimento = nova_data
+    data = request.json
+    pessoa = Pessoa.query.get(id)
+    if not pessoa:
+        return jsonify({'error': 'Pessoa não encontrada'}), 404
+
+    pessoa.nascimento = datetime.strptime(data['nascimento'], "%Y-%m-%d").date()
     db.session.commit()
-    return jsonify({'message': 'Data de nascimento atualizada'}), 200
+    return jsonify({'message': 'Data de nascimento atualizada com sucesso'})
 
 @bp.route('/deletar_todos', methods=['DELETE'])
 def deletar_todos():
