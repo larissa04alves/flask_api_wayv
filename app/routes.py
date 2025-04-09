@@ -53,11 +53,12 @@ def listar():
       200:
         description: Lista de pessoas
     """
-    sexo = request.args.get('sexo')
-    query = Pessoa.query
-    if sexo:
-        query = query.filter(sexo == sexo)
-    pessoas = query.all()
+    sexo_filtro = request.args.get('sexo')
+
+    if sexo_filtro:
+        pessoas = Pessoa.query.filter_by(sexo=sexo_filtro).all()
+    else:
+        pessoas = Pessoa.query.all()
     return jsonify([
         {
             'id': p.id,
