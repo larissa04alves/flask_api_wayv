@@ -7,19 +7,20 @@ bp = Blueprint('routes', __name__)
 
 @bp.route('/inserir_excel', methods=['POST'])
 def inserir_excel():
-    file = request.files('file')
+    file = request.files['file']
     if not file:
         return jsonify({'error': 'Arquivo excel não enviado'}), 400
     
     df = pd.read_excel(file)
     for _, row in df.iterrows():
         pessoa = Pessoa(
-            nome=row['Nome Completo'],
+            nome=row['Nome completo'],
             nascimento=row['Data de Nascimento'],
-            sexo=row['sexo'],
-            email=row['Email'],
-            telefone=row['Telefone']
+            sexo=row['Sexo'],
+            email=row['E-mail'],
+            telefone=row['Celular'] 
         )
+        print(df.columns)
         db.session.add(pessoa)
     db.session.commit()
     return jsonify({'message': 'Dados inseridos com sucesso'}), 200
