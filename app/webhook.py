@@ -19,6 +19,27 @@ EXECUTION_COMPANY_ID = "664274977fc8ba05332d2f0c"
 
 @bp.route('/webhook', methods=['POST'])
 def receber_dados():
+    """
+    Recebe dados via webhook e envia idade para API externa
+    ---
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            nome:
+              type: string
+            nascimento:
+              type: string
+              example: "1995-08-15"
+            form_id:
+              type: string
+    responses:
+      200:
+        description: Idade enviada com sucesso
+    """
     data = request.json
     nome = data.get('nome')
     nascimento = data.get('nascimento')

@@ -11,7 +11,7 @@ API desenvolvida com Flask e SQLite para ingestão, listagem, atualização e in
 - SQLAlchemy
 - Pandas
 - SQLite
-- Swagger UI
+- Flasgger (Swagger UI)
 
 ---
 
